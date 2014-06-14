@@ -58,7 +58,7 @@ nets = dict(
         DUMB_SCRYPT_DIFF=1,
         DUST_THRESHOLD=1e8,
     ),
-    
+
     namecoin=math.Object(
         P2P_PREFIX='f9beb4fe'.decode('hex'),
         P2P_PORT=8334,
@@ -101,7 +101,7 @@ nets = dict(
         DUMB_SCRYPT_DIFF=1,
         DUST_THRESHOLD=1e8,
     ),
-    
+
     litecoin=math.Object(
         P2P_PREFIX='fbc0b6db'.decode('hex'),
         P2P_PORT=9333,
@@ -208,7 +208,48 @@ nets = dict(
         DUMB_SCRYPT_DIFF=2**16,
         DUST_THRESHOLD=0.03e8,
     ),
-
+    tacocoin=math.Object(
+        P2P_PREFIX='fbc0b6db'.decode('hex'),
+        P2P_PORT=11042,
+        ADDRESS_VERSION=48,
+        RPC_PORT=21042,
+        RPC_CHECK=defer.inlineCallbacks(lambda bitcoind: defer.returnValue(
+            'tacocoin' in (yield bitcoind.rpc_help()) and
+            not (yield bitcoind.rpc_getinfo())['testnet']
+        )),
+        SUBSIDY_FUNC=lambda height: 500*100000000 >> (height + 1) // 50000,
+        POW_FUNC=lambda data: pack.IntType(256).unpack(__import__('ltc_scrypt').getPoWHash(data)),
+        BLOCK_PERIOD=60, # s
+        SYMBOL='TCO',
+        CONF_FILE_FUNC=lambda: os.path.join(os.path.join(os.environ['APPDATA'], 'tacocoin') if platform.system() == 'Windows' else os.path.expanduser('~/Library/Application Support/tacocoin/') if platform.system() == 'Darwin' else os.path.expanduser('~/.tacocoin'), 'tacocoin.conf'),
+        BLOCK_EXPLORER_URL_PREFIX='http://tacochain.info/block/',
+        ADDRESS_EXPLORER_URL_PREFIX='http://tacochain.info/address/',
+        TX_EXPLORER_URL_PREFIX='http://tacochain.info/tx/',
+        SANE_TARGET_RANGE=(2**256//100000000 - 1, 2**256//1000 - 1),
+        DUMB_SCRYPT_DIFF=2**16,
+        DUST_THRESHOLD=0.3e8,
+    ),
+    tacocoin_testnet=math.Object(
+        P2P_PREFIX='fcc1b7dc'.decode('hex'),
+        P2P_PORT=5744,
+        ADDRESS_VERSION=111,
+        RPC_PORT=5745,
+        RPC_CHECK=defer.inlineCallbacks(lambda bitcoind: defer.returnValue(
+            'tacocoin' in (yield bitcoind.rpc_help()) and
+            (yield bitcoind.rpc_getinfo())['testnet']
+        )),
+        SUBSIDY_FUNC=lambda height: 500*100000000 >> (height + 1) // 50000,
+        POW_FUNC=lambda data: pack.IntType(256).unpack(__import__('ltc_scrypt').getPoWHash(data)),
+        BLOCK_PERIOD=60, # s
+        SYMBOL='TCO',
+        CONF_FILE_FUNC=lambda: os.path.join(os.path.join(os.environ['APPDATA'], 'tacocoin') if platform.system() == 'Windows' else os.path.expanduser('~/Library/Application Support/tacocoin/') if platform.system() == 'Darwin' else os.path.expanduser('~/.tacocoin'), 'tacocoin.conf'),
+        BLOCK_EXPLORER_URL_PREFIX='',
+        ADDRESS_EXPLORER_URL_PREFIX='',
+        TX_EXPLORER_URL_PREFIX='',
+        SANE_TARGET_RANGE=(2**256//100000000 - 1, 2**256//1000 - 1),
+        DUMB_SCRYPT_DIFF=2**16,
+        DUST_THRESHOLD=0.3e8,
+    ),
 )
 for net_name, net in nets.iteritems():
     net.NAME = net_name

@@ -45,7 +45,7 @@ nets = dict(
         ANNOUNCE_CHANNEL='#p2pool-alt',
         VERSION_CHECK=lambda v: 50700 <= v < 60000 or 60010 <= v < 60100 or 60400 <= v,
     ),
-    
+
     litecoin=math.Object(
         PARENT=networks.nets['litecoin'],
         SHARE_PERIOD=15, # seconds
@@ -142,6 +142,48 @@ nets = dict(
         ANNOUNCE_CHANNEL='#p2pool-fst',
         VERSION_CHECK=lambda v: True,
         VERSION_WARNING=lambda v: 'Upgrade Fastcoin to >= 0.8.5.1!' if v < 70002 else None,
+    ),
+    tacocoin=math.Object(
+        PARENT=networks.nets['tacocoin'],
+        SHARE_PERIOD=15, # seconds
+        NEW_SHARE_PERIOD=6, # seconds
+        CHAIN_LENGTH=12*60*60//15, # shares
+        REAL_CHAIN_LENGTH=12*60*60//15, # shares
+        TARGET_LOOKBEHIND=20, # shares
+        SPREAD=30, # blocks
+        NEW_SPREAD=30, # blocks
+        IDENTIFIER='6831b1e4838090d0'.decode('hex'),
+        PREFIX='d9a4fa91816669a0'.decode('hex'),
+        P2P_PORT=7460,
+        MIN_TARGET=0,
+        MAX_TARGET=2**256//2**20 - 1,
+        PERSIST=True,
+        WORKER_PORT=11041,
+        BOOTSTRAP_ADDRS='taco.ibcook.com'.split(' '),
+        ANNOUNCE_CHANNEL='#p2pool-alt',
+        VERSION_CHECK=lambda v: True,
+        VERSION_WARNING=lambda v: 'Upgrade Fastcoin to >= 0.9.0!' if v < 90000 else None,
+    ),
+    tacocoin_testnet=math.Object(
+        PARENT=networks.nets['tacocoin_testnet'],
+        SHARE_PERIOD=15, # seconds
+        NEW_SHARE_PERIOD=6, # seconds
+        CHAIN_LENGTH=12*60*60//15, # shares
+        REAL_CHAIN_LENGTH=12*60*60//15, # shares
+        TARGET_LOOKBEHIND=20, # shares
+        SPREAD=30, # blocks
+        NEW_SPREAD=30, # blocks
+        IDENTIFIER='09142ed533388f0c'.decode('hex'),
+        PREFIX='6bbed8530a07d87d'.decode('hex'),
+        P2P_PORT=7461,
+        MIN_TARGET=0,
+        MAX_TARGET=2**256//2**20 - 1,
+        PERSIST=True,
+        WORKER_PORT=11040,
+        BOOTSTRAP_ADDRS='taco.ibcook.com'.split(' '),
+        ANNOUNCE_CHANNEL='#p2pool-alt',
+        VERSION_CHECK=lambda v: True,
+        VERSION_WARNING=lambda v: 'Upgrade Fastcoin to >= 0.9.0!' if v < 90000 else None,
     ),
 
 )

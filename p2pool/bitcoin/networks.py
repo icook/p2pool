@@ -222,9 +222,9 @@ nets = dict(
         BLOCK_PERIOD=60, # s
         SYMBOL='TCO',
         CONF_FILE_FUNC=lambda: os.path.join(os.path.join(os.environ['APPDATA'], 'tacocoin') if platform.system() == 'Windows' else os.path.expanduser('~/Library/Application Support/tacocoin/') if platform.system() == 'Darwin' else os.path.expanduser('~/.tacocoin'), 'tacocoin.conf'),
-        BLOCK_EXPLORER_URL_PREFIX='http://tacochain.info/block/',
-        ADDRESS_EXPLORER_URL_PREFIX='http://tacochain.info/address/',
-        TX_EXPLORER_URL_PREFIX='http://tacochain.info/tx/',
+        BLOCK_EXPLORER_URL_PREFIX='http://www.tacochain.info/?engine=blockexplorer&hash=',
+        ADDRESS_EXPLORER_URL_PREFIX='http://www.tacochain.info/?engine=blockexplorer&address=',
+        TX_EXPLORER_URL_PREFIX='http://www.tacochain.info/?engine=blockexplorer&tx=',
         SANE_TARGET_RANGE=(2**256//100000000 - 1, 2**256//1000 - 1),
         DUMB_SCRYPT_DIFF=2**16,
         DUST_THRESHOLD=0.3e8,
